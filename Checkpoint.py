@@ -5,7 +5,14 @@ def __call__(self, val_loss, model, path):
         self.best_score = score
         self.save_checkpoint(val_loss, model, path)
 
-
+"""
+    使用技巧：
+    1. checkpoint可以按周期（epochs）保存，也可以按迭代batch保存
+    2. checkpoint也可以在验证集上的性能有显著提升的时候保存，比新的验证损失低于之前保存的损失的时候
+    3. 也可以碰到电源中断等异常情况的时候保存当前状态
+    
+    注意：避免文件覆盖，检查点的文件名可以包含时间戳或者epochs编号
+"""
 def save_checkpoint(self, val_loss, model, path):
     # 通过torch.save(model.state_dict(), path+'/'+'checkpoint.pth')将当前训练轮次的参数保存下来
     if self.verbose:
